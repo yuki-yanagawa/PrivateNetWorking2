@@ -1,0 +1,9 @@
+GET / com.yana.PrivateNetWorking.Node.localServer.controller.TestController.main
+GET /*.js com.yana.PrivateNetWorking.Node.localServer.controller.FileReadController.readFileJS
+GET /*.css com.yana.PrivateNetWorking.Node.localServer.controller.FileReadController.readFileCSS
+POST /join com.yana.PrivateNetWorking.Node.localServer.controller.CommandController.join
+POST /updateMembership com.yana.PrivateNetWorking.Node.localServer.controller.CommandController.updateMembership
+GET /connectWebSocket com.yana.PrivateNetWorking.Node.localServer.controller.WebSocketController.connect
+POST /registerObservation com.yana.PrivateNetWorking.Node.localServer.controller.RegistObserverController.regist
+POST /requestDirList com.yana.PrivateNetWorking.Node.localServer.controller.CommandController.requestDirList
+POST /disconnect com.yana.PrivateNetWorking.Node.localServer.controller.CommandController.disconnect

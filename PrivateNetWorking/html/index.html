@@ -1,0 +1,44 @@
+<html lang="en">
+<head>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <!-- <link rel="stylesheet" href="../css/main.css" type="text/css"> -->
+    <link rel="stylesheet" href="main.css" type="text/css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>PRIVATE NET</h1>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <h2 class="maintitle">JOIN MEMBERSHIP</h2>
+            <label for="name">Name:</label><input type="text" name="name" id="name">
+            <input id="join-button" type="button" value="Join">
+            <h3 class="activeUserTitle">ACTIVE USER</h3>
+            <div class="pain-users">
+                <ul>
+                    <li id="usertemplate"><button class="selectBt" style="display: none;">USER1</button></li>
+                </ul>
+            </div>
+            <div class="selectedUser">
+                <input type="text" id="selectedUser" placeholder="Selected User" readonly>
+            </div>
+            <div>
+                <button id="GetFileList">Get File List</button>
+                <!-- <button id="Call">Call</button> -->
+            </div>
+            <div class="pain-files">
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+        </div>
+    </footer>
+    <!-- <script src="../javascript/jquery-3.7.1.min.js"></script>
+    <script src="../javascript/main.js"></script> -->
+    <script src="jquery-3.7.1.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

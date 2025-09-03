@@ -1,0 +1,52 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+main{
+    height: 50vw;
+}
+.maintitle{
+    margin-left: 10px;
+}
+.mainsubtitle{
+    margin-top: 10px;
+    margin-left: 10px;
+}
+label {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.container{
+    width: 100%;
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: gold;
+}
+main .container{
+    height: 100%;
+}
+#join-button{
+    cursor: pointer;
+}
+.pain_users{
+    background-color: white;
+    overflow-y: scroll;
+    max-height: 20vw;
+}
+.selectBt{
+    border: none;
+    background-color: white;
+    cursor: pointer;
+}
+.selectBt:hover{
+    background-color: lightgray;
+}
+.pain_files{
+    background-color: white;
+    overflow-y: scroll;
+    max-height: 20vw;
+}
+ul {
+  list-style: none;
+}
