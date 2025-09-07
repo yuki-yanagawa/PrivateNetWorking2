@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 import com.yana.PrivateNetWorking.CentralRouter.analyzer.IAnalyzer;
 import com.yana.PrivateNetWorking.CentralRouter.analyzer.RouterAnalyzerFactory;
 import com.yana.PrivateNetWorking.CentralRouter.cert.RouterCertCreator;
+import com.yana.PrivateNetWorking.CentralRouter.intervalcommunication.ActiveUserCheckThread;
 import com.yana.PrivateNetWorking.CentralRouter.keygen.KeyGenerateHelper;
 import com.yana.PrivateNetWorking.CentralRouter.prop.RouterProperties;
 import com.yana.PrivateNetWorking.common.logger.LoggerUtil;
@@ -40,11 +41,12 @@ public class CentralRouterEntry {
 		int recvierCount = 5;
 		ExecutorService analyzerService = Executors.newFixedThreadPool(recvierCount);
 		launchReciver(analyzerService, privateNetSocket, recvierCount);
+		ActiveUserCheckThread activeUserCheckThread = new ActiveUserCheckThread(privateNetSocket);
+		activeUserCheckThread.start();
 
 //		ExecutorService senderService = Executors.newFixedThreadPool(1);
 //		launchSender(senderService);
-		
-		Runtime.getRuntime().addShutdownHook(new ShutDownEvent(privateNetSocket, analyzerService));
+		Runtime.getRuntime().addShutdownHook(new ShutDownEvent(privateNetSocket, analyzerService, activeUserCheckThread));
 	}
 
 	private static void close(PrivateNetSocket privateNetSocket) {
@@ -86,9 +88,11 @@ public class CentralRouterEntry {
 	private static class ShutDownEvent extends Thread {
 		PrivateNetSocket privateNetSocket;
 		ExecutorService analyzerService;
-		ShutDownEvent(PrivateNetSocket privateNetSocket, ExecutorService analyzerService) {
+		ActiveUserCheckThread activeUserCheckThread;
+		ShutDownEvent(PrivateNetSocket privateNetSocket, ExecutorService analyzerService, ActiveUserCheckThread activeUserCheckThread) {
 			this.privateNetSocket = privateNetSocket;
 			this.analyzerService = analyzerService;
+			this.activeUserCheckThread = activeUserCheckThread;
 		}
 
 		@Override

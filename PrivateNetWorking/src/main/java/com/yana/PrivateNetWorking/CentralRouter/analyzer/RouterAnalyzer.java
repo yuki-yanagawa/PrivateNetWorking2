@@ -43,6 +43,7 @@ public class RouterAnalyzer implements IAnalyzer {
 		IAction action = null;
 		switch(communication) {
 		case JOIN:
+			LoggerUtil.info("JOIN : " + socketAddress);
 			String joinUserName = "unknown";
 			if(requetLines[1].trim().startsWith(CommunicationDefnition.KEY_USER_NAME)) {
 				joinUserName = requetLines[1].split(CommunicationDefnition.KEY_VAL_SEPALATOR)[1].trim();
@@ -52,9 +53,11 @@ public class RouterAnalyzer implements IAnalyzer {
 			notifyUpdateMember();
 			break;
 		case REQUEST_COMMONKEY:
+			LoggerUtil.info("REQUEST_COMMONKEY : " + socketAddress);
 			action = ActionSelector.select(CommunicationCommand.REQUEST_COMMONKEY, privateNetSocket, socketAddress);
 			break;
 		case DISCONNECT:
+			LoggerUtil.info("DISCONNECT : " + socketAddress);
 			action = ActionSelector.select(CommunicationCommand.DISCONNECT, privateNetSocket, socketAddress);
 			break;
 		case NO_RESPONSE_USER:

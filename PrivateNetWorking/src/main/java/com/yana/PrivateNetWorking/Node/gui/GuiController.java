@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -20,6 +21,7 @@ import com.yana.PrivateNetWorking.Node.privateNetWorker.PrivateNetSocketCreator;
 import com.yana.PrivateNetWorking.Node.privateNetWorker.analyzer.INodeAnalyzer;
 import com.yana.PrivateNetWorking.Node.privateNetWorker.analyzer.NodeAnalyzerFactory;
 import com.yana.PrivateNetWorking.Node.privateNetWorker.command.CommandOperator;
+import com.yana.PrivateNetWorking.Node.shutDownIF.InvokeShutDownEvent;
 import com.yana.privateNetSocket2.PrivateNetSocket;
 
 public class GuiController extends JFrame implements ActionListener {
@@ -72,6 +74,7 @@ public class GuiController extends JFrame implements ActionListener {
 
 	public static GuiController displayOpen() {
 		GuiController guiController = new GuiController();
+		InvokeShutDownEvent.getInstance().setGuiController(guiController);
 		guiController.repaint();
 		return guiController;
 	}
@@ -82,8 +85,12 @@ public class GuiController extends JFrame implements ActionListener {
 			joinNetWorking();
 		}
 		if(COMMAND_END.equals(e.getActionCommand())) {
-			
+			this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 		}
+	}
+
+	public void invokeExitEvent() {
+		serviceEndButton.doClick();
 	}
 
 	private boolean joinNetWorking() {

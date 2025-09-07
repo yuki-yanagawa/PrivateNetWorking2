@@ -11,7 +11,8 @@ public class WatchOutDirMap {
 	}
 
 	static synchronized void update(String filename) {
-		
+		WatchFile watchFile = outfileMap.get(filename);
+		watchFile.updateFileInfo();
 	}
 
 	static byte[] getWatchFileData(String filename) {
@@ -24,5 +25,13 @@ public class WatchOutDirMap {
 
 	static synchronized Map<String, WatchFile> getOutfileMap() {
 		return outfileMap;
+	}
+
+	static synchronized byte[] getFileData(String filename) {
+		WatchFile watchFile = outfileMap.get(filename);
+		if(watchFile == null) {
+			return new byte[0];
+		}
+		return watchFile.getFileData();
 	}
 }

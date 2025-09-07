@@ -1,6 +1,10 @@
 package com.yana.PrivateNetWorking.Node;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.nio.file.Paths;
+import java.util.Properties;
 
 import com.yana.PrivateNetWorking.Node.gui.GuiController;
 import com.yana.PrivateNetWorking.Node.keygen.KeyGenerateException;
@@ -8,7 +12,9 @@ import com.yana.PrivateNetWorking.Node.keygen.KeyGenratorHelper;
 import com.yana.PrivateNetWorking.Node.localServer.router.Routing;
 import com.yana.PrivateNetWorking.Node.localServer.websocket.WebSocketManager;
 import com.yana.PrivateNetWorking.Node.watchdir.WatchDirManager;
+import com.yana.PrivateNetWorking.common.comminucation.def.CommunicationDefnition;
 import com.yana.PrivateNetWorking.common.logger.LoggerUtil;
+import com.yana.PrivateNetWorking.common.util.CharsetUtil;
 import com.yana.privateNetSocket2.PrivateNetSocket;
 
 public class NodeEntry {
@@ -48,6 +54,11 @@ public class NodeEntry {
 			PrivateNetSocket socket = guiController.getPrivateNetSocket();
 			if(socket != null) {
 				try {
+					InetSocketAddress socketAddress = getRouterSocketAddress();
+					if(socketAddress != null) {
+						socket.sendData((CommunicationDefnition.SUBJ_DISCONNECT 
+								+ CommunicationDefnition.LINE_SPARATOR).getBytes(CharsetUtil.charSet()), socketAddress);
+					}
 					socket.close();
 				} catch(IOException e) {
 				}
@@ -66,5 +77,17 @@ public class NodeEntry {
 			return;
 		}
 		System.setProperty(key, value);
+	}
+
+	private static InetSocketAddress getRouterSocketAddress() {
+		Properties prop = new Properties();
+		try(FileInputStream fis = new FileInputStream(Paths.get("conf/NodePrivateWorkerSetting.properties").toFile())) {
+			prop.load(fis);
+		} catch(IOException e) {
+			return null;
+		}
+		String addr = prop.get("centralRouterAddress").toString();
+		int port = Integer.parseInt(prop.get("centralRouterPort").toString());
+		return new InetSocketAddress(addr, port);
 	}
 }

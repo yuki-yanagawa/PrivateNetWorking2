@@ -50,3 +50,12 @@ main .container{
 ul {
   list-style: none;
 }
+
+.fileBt{
+    border: none;
+    background-color: white;
+    cursor: pointer;
+}
+.fileBt:hover{
+    background-color: lightgray;
+}

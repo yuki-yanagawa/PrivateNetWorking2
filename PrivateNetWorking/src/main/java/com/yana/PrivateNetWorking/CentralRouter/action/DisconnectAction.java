@@ -13,7 +13,6 @@ class DisconnectAction implements IAction{
 	}
 	@Override
 	public void execute(String[] requetLines) {
-		// TODO Auto-generated method stub
-		
+		memberCache.removeMember(socketAddr);
 	}
 }

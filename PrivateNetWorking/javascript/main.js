@@ -1,4 +1,5 @@
 var activeUSerTemplate;
+var fileListTemplate;
 var url = "";
 var websocket;
 $(function() {
@@ -6,11 +7,70 @@ $(function() {
     url = location.href;
     console.log("URL: " + url);
     activeUSerTemplate = $("#usertemplate").clone();
+    fileListTemplate = $("#filetemplate").clone();
     window.addEventListener("beforeunload", function(event) {
         event.preventDefault();
         alert("You are leaving the page");
     });
+    $('#GetFileList').off("click").on('click', function() {
+        getFileList();
+    });
+    $('#GetFile').off("click").on('click', function() {
+        getFile();
+    });
 });
+
+function getFileList() {
+    var selectedUser = $("#selectedUser").val().trim();
+    if (selectedUser === "") {
+        alert("Please select a user.");
+        return;
+    }
+    var addr = selectedUser.split(/\s+/g)[1];
+    $.ajax({
+        type: "POST",
+        url: url + "requestDirList",
+        data: JSON.stringify({ useraddr: addr }),
+        contentType: "application/json",
+        success: function(response) {
+            // Handle successful response
+            debugger;
+            console.log("File list retrieved successfully:", response);
+            createFileList(response.fileList);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error retrieving file list:", error);
+        }
+    });
+}
+
+function getFile() {
+    var selectedUser = $("#selectedUser").val().trim();
+    if (selectedUser === "") {
+        alert("Please select a user.");
+        return;
+    }
+    var selectedFile = $("#selectedFile").val().trim();
+    if (selectedFile === "") {
+        alert("Please select a file.");
+        return;
+    }
+    var addr = selectedUser.split(/\s+/g)[1];
+    var fileName = selectedFile;
+    $.ajax({
+        type: "POST",
+        url: url + "requestFile",
+        data: JSON.stringify({ useraddr: addr, filename: fileName }),
+        contentType: "application/json",
+        success: function(response) {
+            // Handle successful response
+            console.log("File retrieved successfully:", response);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error retrieving file:", error);
+        }
+    });
+}
 
 function join() {
     if ($("#name").val().trim() === "") {
@@ -77,20 +137,6 @@ function connectWebSocket() {
     };
 }
 
-// function pollingWorker() {
-//     setInterval(function() {
-//         $.ajax({
-//             type: "POST",
-//             url: url + "updateMembership",
-//             success: function(response) {
-//                 createMembershipList(response.users);
-//             },
-//             error: function(xhr, status, error) {
-//                 console.error("Error fetching status: " + error);
-//             }
-//         });
-//     }, 5000);
-// }
 
 function createMembershipList(users) {
     const userList = $(".pain-users ul");
@@ -107,8 +153,34 @@ function createMembershipList(users) {
         userItem.attr("id", "user-" + (i + 1));
         userList.append(userItem);
         $("#user-" + (i + 1)).find(".selectBt").off("click").on("click", function() {
-            $("#selectedUser").val(data);
-            console.log("Selected user: " + data);
+            $("#selectedUser").val(this.innerHTML);
+            console.log("Selected user: " + this.innerHTML);
+        });
+    }
+}
+
+function createFileList(files) {
+    const fileList = $(".pain-files ul");
+    fileList.empty();
+    for (var i = 0; i < files.length; i++) {
+        if (files[i].indexOf("filename=") < 0) {
+            continue;
+        }
+        var datas = files[i].split(":");
+        var filename = datas[0].split("filename=")[1].trim();
+        var size = datas[1].split("filesize=")[1].trim();
+        // if (size >= 1024) {
+        //     size = (size / 1024).toFixed(1) + " MB";
+        // } else {
+        //     size = size + " KB";
+        // }
+        const fileItem = fileListTemplate.clone();
+        fileItem.find(".fileBt").text(filename).show();
+        fileItem.attr("id", "file-" + (i + 1));
+        fileList.append(fileItem);
+        $("#file-" + (i + 1)).find(".fileBt").off("click").on("click", function() {
+            $("#selectedFile").val(this.innerHTML);
+            console.log("Selected file: " + this.innerHTML);
         });
     }
 }

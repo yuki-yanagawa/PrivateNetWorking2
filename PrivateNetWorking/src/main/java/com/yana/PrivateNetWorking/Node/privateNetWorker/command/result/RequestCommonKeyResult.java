@@ -50,6 +50,7 @@ class RequestCommonKeyResult implements ICommandResult {
 			}
 			PrivateNetWorkCommonKey privateNetWorkCommonKey = (PrivateNetWorkCommonKey)retObj;
 			System.out.println("Check !!!! : " + privateNetWorkCommonKey.getTransFormation());
+			privateNetWorkCommonKey.init();
 			NodeKeyStore.setPrivateNetworkCommonKey(privateNetWorkCommonKey);
 		} catch(NoSuchAlgorithmException e) {
 			LoggerUtil.warn(e);

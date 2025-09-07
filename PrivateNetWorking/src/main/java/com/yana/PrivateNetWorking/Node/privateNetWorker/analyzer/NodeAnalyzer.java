@@ -4,9 +4,10 @@ import java.net.InetSocketAddress;
 import java.util.Arrays;
 
 import com.yana.PrivateNetWorking.Node.keyStore.NodeKeyStore;
-import com.yana.PrivateNetWorking.Node.localServer.model.autoResponse.AutoResponseSelector;
-import com.yana.PrivateNetWorking.Node.localServer.model.autoResponse.IAutoResponse;
 import com.yana.PrivateNetWorking.Node.privateNetWorker.accept.Acceptor;
+import com.yana.PrivateNetWorking.Node.privateNetWorker.autoResponse.AutoResponseSelector;
+import com.yana.PrivateNetWorking.Node.privateNetWorker.autoResponse.IAutoResponse;
+import com.yana.PrivateNetWorking.Node.privateNetWorker.collectFile.CollectFileData;
 import com.yana.PrivateNetWorking.Node.privateNetWorker.command.CommandOperator;
 import com.yana.PrivateNetWorking.Node.privateNetWorker.command.ICommand;
 import com.yana.PrivateNetWorking.Node.privateNetWorker.command.result.CommandResultSelector;
@@ -65,6 +66,9 @@ class NodeAnalyzer implements INodeAnalyzer {
 		case REQUSER_COMMON_COM:
 			decrypt(packetData, socketAddress, headerIndex);
 			break;
+		case ACTIVATE:
+			autoResponse(packetData, socketAddress, communication);
+			break;
 		default:
 			break;
 		}
@@ -86,6 +90,12 @@ class NodeAnalyzer implements INodeAnalyzer {
 		case REQUSET_DIRLIST_ACK:
 			commandResult = CommandResultSelector.selectCommandResult(CommunicationCommand.REQUSET_DIRLIST);
 			break;
+		case REQUEST_FILE:
+			// Auto Response
+			autoResponse(packetData, socketAddress, communication);
+			break;
+		case REQUEST_FILE_ACK:
+			collectFileData(packetData);
 		default:
 			break;
 		}
@@ -127,5 +137,9 @@ class NodeAnalyzer implements INodeAnalyzer {
 			return;
 		}
 		analyzeCommonPacket(newPacketData, socketAddress);
+	}
+
+	private void collectFileData(byte[] packetData) {
+		new CollectFileData(packetData).execute();
 	}
 }

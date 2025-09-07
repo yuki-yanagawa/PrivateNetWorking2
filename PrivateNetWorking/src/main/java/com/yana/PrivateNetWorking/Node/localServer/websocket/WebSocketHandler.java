@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 
 import com.yana.PrivateNetWorking.Node.localServer.socket.WrapperSocket;
+import com.yana.PrivateNetWorking.Node.shutDownIF.InvokeShutDownEvent;
 import com.yana.PrivateNetWorking.common.logger.LoggerUtil;
 
 class WebSocketHandler implements Runnable {
@@ -37,6 +38,7 @@ class WebSocketHandler implements Runnable {
 			} catch(IOException e) {
 				
 			}
+			InvokeShutDownEvent.getInstance().invoke();
 		}
 	}
 

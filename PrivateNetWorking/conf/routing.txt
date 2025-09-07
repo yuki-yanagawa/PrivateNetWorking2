@@ -7,3 +7,4 @@ GET /connectWebSocket com.yana.PrivateNetWorking.Node.localServer.controller.Web
 POST /registerObservation com.yana.PrivateNetWorking.Node.localServer.controller.RegistObserverController.regist
 POST /requestDirList com.yana.PrivateNetWorking.Node.localServer.controller.CommandController.requestDirList
 POST /disconnect com.yana.PrivateNetWorking.Node.localServer.controller.CommandController.disconnect
+POST /requestFile com.yana.PrivateNetWorking.Node.localServer.controller.CommandController.requestFile

@@ -1,4 +1,4 @@
-package com.yana.PrivateNetWorking.Node.localServer.model.autoResponse;
+package com.yana.PrivateNetWorking.Node.privateNetWorker.autoResponse;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -19,6 +19,7 @@ class DirListAutoResponse implements IAutoResponse {
 	private PrivateNetSocket privateNetSocket;
 	private InetSocketAddress retAddr;
 	DirListAutoResponse(PrivateNetSocket privateNetSocket, InetSocketAddress retAddr) {
+		this.privateNetSocket = privateNetSocket;
 		this.retAddr = retAddr;
 	}
 	

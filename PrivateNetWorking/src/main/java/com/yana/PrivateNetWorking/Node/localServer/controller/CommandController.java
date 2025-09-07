@@ -13,6 +13,7 @@ import com.yana.PrivateNetWorking.Node.privateNetWorker.command.CommandOperator;
 import com.yana.PrivateNetWorking.Node.privateNetWorker.command.FutureCommandResult;
 import com.yana.PrivateNetWorking.Node.privateNetWorker.command.ICommand;
 import com.yana.PrivateNetWorking.common.comminucation.def.CommunicationCommand;
+import com.yana.PrivateNetWorking.common.util.CharsetUtil;
 
 public class CommandController extends AbstractController {
 	public ResponseData join() {
@@ -73,5 +74,18 @@ public class CommandController extends AbstractController {
 				return "{\"disconnect\" : \"OK\"}";
 			}
 		});
+	}
+
+	public ResponseData requestFile() {
+		ICommand command = CommandOperator.command(CommunicationCommand.REQUEST_FILE);
+		String bodyData = getRequestBody();
+		JSONObject jsonObject = new JSONObject(bodyData);
+		FutureCommandResult<?> commandResult = command.execute(() -> jsonObject);
+		byte[] responseData = (byte[])commandResult.getResult();
+		if(responseData.length == 0) {
+			return notFound();
+		}
+		DefaultJsonObject defaultJsonObject = new DefaultJsonObject(new String(responseData, CharsetUtil.charSet()));
+		return json(defaultJsonObject);
 	}
 }

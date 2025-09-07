@@ -1,10 +1,7 @@
 package com.yana.PrivateNetWorking.Node.localServer.model.responseDataAnalyze;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.yana.PrivateNetWorking.Node.localServer.httpServer.response.json.DefaultJsonObject;
 import com.yana.PrivateNetWorking.Node.localServer.httpServer.response.json.JsonObject;
-import com.yana.PrivateNetWorking.Node.localServer.httpServer.response.json.StandardJsonObject;
 import com.yana.PrivateNetWorking.common.comminucation.def.CommunicationDefnition;
 import com.yana.PrivateNetWorking.common.util.CharsetUtil;
 
@@ -25,10 +22,10 @@ public class DirListResponseDataAnalyzer {
 		if(responseDataLines.length != 2) {
 			return false;
 		}
-		String[] fileLists = responseDataLines[1].split(",");
-		Map<String, Object> fileMap = new HashMap<>();
-		fileMap.put("fileList", fileLists);
-		responseJsonData = new StandardJsonObject(fileMap);
+//		String[] fileLists = responseDataLines[1].split(",");
+//		Map<String, Object> fileMap = new HashMap<>();
+//		fileMap.put("fileList", fileLists);
+		responseJsonData = new DefaultJsonObject(responseDataLines[1]);
 		return true;
 	}
 
