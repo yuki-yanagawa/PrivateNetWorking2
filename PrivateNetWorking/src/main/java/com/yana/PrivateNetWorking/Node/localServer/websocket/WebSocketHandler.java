@@ -42,7 +42,7 @@ class WebSocketHandler implements Runnable {
 		}
 	}
 
-	public void sendData(byte[] data) {
+	public synchronized void sendData(byte[] data) {
 		byte[] sendData = WebSocketMessageUtil.createSendMessage(data);
 		try {
 			outputStream.write(sendData);

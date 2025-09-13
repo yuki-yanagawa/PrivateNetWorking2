@@ -33,6 +33,9 @@ public class ActiveUserCheckThread extends Thread {
 	private void activeUserCheck() {
 		List<String> tmpUserList = MemberCache.getInstance().getDisplayStyleAndIdentityCode();
 		String displayMemberList = tmpUserList.get(1);
+		if("".equals(displayMemberList.trim())) {
+			return;
+		}
 		StringBuilder sb = new StringBuilder();
 		sb.append(CommunicationDefnition.SUBJ_ACTIVATE).append(CommunicationDefnition.LINE_SPARATOR);
 		byte[] sendData = sb.toString().getBytes(CharsetUtil.charSet());

@@ -9,6 +9,8 @@ public class ObserverSelector {
 		switch(command){
 		case UPDATE_MEMBER:
 			return Optional.of(new UpdateMemberObserver());
+		case REQUEST_FILE_ACK:
+			return Optional.of(new AckFileObserver());
 		default:
 			return Optional.empty();
 		}

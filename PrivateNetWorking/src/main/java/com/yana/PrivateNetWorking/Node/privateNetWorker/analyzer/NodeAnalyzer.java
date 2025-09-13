@@ -96,6 +96,9 @@ class NodeAnalyzer implements INodeAnalyzer {
 			break;
 		case REQUEST_FILE_ACK:
 			collectFileData(packetData);
+			// Acceptor
+			acceptor.addResponseData(communication, packetData);
+			break;
 		default:
 			break;
 		}

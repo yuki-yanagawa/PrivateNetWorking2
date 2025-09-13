@@ -27,6 +27,7 @@ function getFileList() {
         return;
     }
     var addr = selectedUser.split(/\s+/g)[1];
+    $('#GetFileList').prop('disabled',true);
     $.ajax({
         type: "POST",
         url: url + "requestDirList",
@@ -37,9 +38,11 @@ function getFileList() {
             debugger;
             console.log("File list retrieved successfully:", response);
             createFileList(response.fileList);
+            $('#GetFileList').prop('disabled',false);
         },
         error: function(xhr, status, error) {
             console.error("Error retrieving file list:", error);
+            $('#GetFileList').prop('disabled',false);
         }
     });
 }
@@ -57,6 +60,7 @@ function getFile() {
     }
     var addr = selectedUser.split(/\s+/g)[1];
     var fileName = selectedFile;
+    $('#GetFile').prop('disabled',true);
     $.ajax({
         type: "POST",
         url: url + "requestFile",
@@ -102,7 +106,7 @@ function join() {
 
 function registerObservation() {
     var obj = {
-        target : 'UPDATE_MEMBER,'
+        target : 'UPDATE_MEMBER, REQUEST_FILE_ACK, '
     };
     $.ajax({
         type: "POST",
@@ -130,6 +134,9 @@ function connectWebSocket() {
         var data = event.data.split("\r\n");
         if(data[0] ===  'UPDATE_MEMBER') {
             createMembershipList(data[1]);
+        }
+        if(data[0] === 'REQUEST_FILE_ACK') {
+            alert("File transfer completed.");
         }
     };
     websocket.onclose = function(event) {
