@@ -11,6 +11,8 @@ public class CommandResultSelector {
 			return new RequestCommonKeyResult();
 		case REQUSET_DIRLIST:
 			return new RequestDirListResult();
+		case REQUEST_CALL:
+			return new RequestCallResult();
 		default:
 			return null;
 		}

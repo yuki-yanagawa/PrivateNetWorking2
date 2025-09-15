@@ -15,10 +15,14 @@ public class CommunicationDefnition {
 	public static final String SUBJ_REQUSET_DIRLIST_ACK = "REQUSET_DIRLIST_ACK";
 	public static final String SUBJ_REQUSET_FILE = "REQUEST_FILE";
 	public static final String SUBJ_REQUSET_FILE_ACK = "REQUEST_FILE_ACK";
+	public static final String SUBJ_REQUSET_CALL = "REQUEST_CALL";
+	public static final String SUBJ_REQUSET_CALL_ACK = "REQUEST_CALL_ACK";
 	public static final String SUBJ_NONE = "NONE";
 	public static final String SUBJ_DISCONNECT = "DISCONNECT";
 	public static final String SUBJ_ACTIVATE = "ACTIVATE";
 	public static final String SUBJ_ACTIVATE_ACK = "ACTIVATE_ACK";
+	public static final String SUBJ_CALLING = "CALLING";
+	public static final String SUBJ_CALLEND = "CALLEND";
 
 	//KEY_VAL
 	public static final String KEY_USER_NAME = "USER_NAME";
@@ -28,6 +32,8 @@ public class CommunicationDefnition {
 	public static final String KEY_COMK = "COMK";
 	public static final String KEY_FILENAME = "FILENAME";
 	public static final String KEY_FILEDATA = "FILEDATA";
+	public static final String KEY_CALLREQUEST_NAME = "CALLREQUEST_NAME";
+	public static final String KEY_CALLREQUEST_ADDR = "CALLREQUEST_ADDR";
 	
 	public static final String KEY_VAL_SEPALATOR = "=";
 

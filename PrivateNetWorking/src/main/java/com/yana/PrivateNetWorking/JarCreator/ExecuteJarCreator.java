@@ -67,9 +67,12 @@ public class ExecuteJarCreator {
 		process = executeCommand("cmd /c robocopy cert " + buildDir.getAbsolutePath() + File.separator + "cert" +  " /s /e");
 		process = executeCommand("cmd /c robocopy keys " + buildDir.getAbsolutePath() + File.separator + "keys" + " /s /e");
 		process = executeCommand("cmd /c robocopy conf " + buildDir.getAbsolutePath() + File.separator + "conf" + " /s /e");
-		new File(buildDir.getAbsolutePath() + File.separator + "log").mkdir();
-		new File(buildDir.getAbsolutePath() + File.separator + "outdir").mkdir();
-		new File(buildDir.getAbsolutePath() + File.separator + "collectdir").mkdir();
+		process = executeCommand("cmd /c robocopy log " + buildDir.getAbsolutePath() + File.separator + "log" + " /s /e");
+		process = executeCommand("cmd /c robocopy outdir " + buildDir.getAbsolutePath() + File.separator + "outdir" + " /s /e");
+		process = executeCommand("cmd /c robocopy collectdir " + buildDir.getAbsolutePath() + File.separator + "collectdir" + " /s /e");
+//		new File(buildDir.getAbsolutePath() + File.separator + "log").mkdir();
+//		new File(buildDir.getAbsolutePath() + File.separator + "outdir").mkdir();
+//		new File(buildDir.getAbsolutePath() + File.separator + "collectdir").mkdir();
 		File tmpClass = new File(buildDir.getAbsolutePath() + File.separator + "classes");
 		executeCommand("cmd /c robocopy " + "target" + File.separator + "classes " + tmpClass.getAbsolutePath() + " /s /e");
 
