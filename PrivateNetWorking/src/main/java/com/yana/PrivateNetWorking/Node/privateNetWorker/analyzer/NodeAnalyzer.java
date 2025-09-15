@@ -4,6 +4,8 @@ import java.net.InetSocketAddress;
 import java.util.Arrays;
 
 import com.yana.PrivateNetWorking.Node.keyStore.NodeKeyStore;
+import com.yana.PrivateNetWorking.Node.localServer.websocket.WebSocketManager;
+import com.yana.PrivateNetWorking.Node.privateNetWorker.WrapAcceptPrivateNetPacketData;
 import com.yana.PrivateNetWorking.Node.privateNetWorker.accept.Acceptor;
 import com.yana.PrivateNetWorking.Node.privateNetWorker.autoResponse.AutoResponseSelector;
 import com.yana.PrivateNetWorking.Node.privateNetWorker.autoResponse.IAutoResponse;
@@ -14,6 +16,7 @@ import com.yana.PrivateNetWorking.Node.privateNetWorker.command.result.CommandRe
 import com.yana.PrivateNetWorking.Node.privateNetWorker.command.result.ICommandResult;
 import com.yana.PrivateNetWorking.common.comminucation.def.CommunicationCommandDecider;
 import com.yana.PrivateNetWorking.common.key.PrivateNetWorkCommonKey;
+import com.yana.PrivateNetWorking.common.logger.LoggerUtil;
 import com.yana.PrivateNetWorking.common.comminucation.def.CommunicationCommand;
 import com.yana.PrivateNetWorking.common.util.CharsetUtil;
 import com.yana.privateNetSocket2.PrivateNetSocket;
@@ -60,7 +63,7 @@ class NodeAnalyzer implements INodeAnalyzer {
 			break;
 		case UPDATE_MEMBER:
 			// Acceptor
-			acceptor.addResponseData(communication, packetData);
+			acceptor.addResponseData(communication, new WrapAcceptPrivateNetPacketData(socketAddress, packetData));
 			//UpdateMemberCheckCommandResult.setLatestUpdateUsers(packetData);
 			break;
 		case REQUSER_COMMON_COM:
@@ -91,13 +94,28 @@ class NodeAnalyzer implements INodeAnalyzer {
 			commandResult = CommandResultSelector.selectCommandResult(CommunicationCommand.REQUSET_DIRLIST);
 			break;
 		case REQUEST_FILE:
+			LoggerUtil.info("REQUEST_FILE!!!");
 			// Auto Response
 			autoResponse(packetData, socketAddress, communication);
 			break;
 		case REQUEST_FILE_ACK:
+			LoggerUtil.info("REQUEST_FILE_ACK!!!");
 			collectFileData(packetData);
 			// Acceptor
-			acceptor.addResponseData(communication, packetData);
+			acceptor.addResponseData(communication, new WrapAcceptPrivateNetPacketData(socketAddress, packetData));
+			break;
+		case REQUEST_CALL:
+			LoggerUtil.info("REQUEST_CALL!!!");
+			acceptor.addResponseData(communication, new WrapAcceptPrivateNetPacketData(socketAddress, packetData));
+			break;
+		case REQUEST_CALL_ACK:
+			LoggerUtil.info("REQUEST_CALL ACK!!!");
+			// Request 20 Sec wait...
+			commandResult = CommandResultSelector.selectCommandResult(CommunicationCommand.REQUEST_CALL);
+			break;
+		case CALLING:
+			LoggerUtil.info("CALLING!!!");
+			WebSocketManager.sendCallingDataFromRemote(packetData);
 			break;
 		default:
 			break;

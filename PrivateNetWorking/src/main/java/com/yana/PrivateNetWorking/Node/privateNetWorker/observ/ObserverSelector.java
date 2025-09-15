@@ -11,6 +11,8 @@ public class ObserverSelector {
 			return Optional.of(new UpdateMemberObserver());
 		case REQUEST_FILE_ACK:
 			return Optional.of(new AckFileObserver());
+		case REQUEST_CALL:
+			return Optional.of(new RequestCallObserv());
 		default:
 			return Optional.empty();
 		}

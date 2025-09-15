@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import com.yana.PrivateNetWorking.Node.privateNetWorker.WrapAcceptPrivateNetPacketData;
 import com.yana.PrivateNetWorking.Node.privateNetWorker.observ.IObserver;
 import com.yana.PrivateNetWorking.Node.privateNetWorker.observ.ObserverSelector;
 import com.yana.PrivateNetWorking.common.comminucation.def.CommunicationCommand;
@@ -11,7 +12,7 @@ import com.yana.PrivateNetWorking.common.comminucation.def.CommunicationCommand;
 public class Acceptor {
 	private static Acceptor acceptor = new Acceptor();
 	private Map<CommunicationCommand, IObserver> obServerMap = new HashMap<>();
-	private Map<CommunicationCommand, byte[]>  tmpStore = new HashMap<>();
+	private Map<CommunicationCommand, WrapAcceptPrivateNetPacketData>  tmpStore = new HashMap<>();
 	private Acceptor() {
 	}
 
@@ -19,7 +20,7 @@ public class Acceptor {
 		return acceptor;
 	}
 
-	public void addResponseData(CommunicationCommand command, byte[] responseData) {
+	public void addResponseData(CommunicationCommand command, WrapAcceptPrivateNetPacketData responseData) {
 		synchronized (obServerMap) {
 			if(!obServerMap.containsKey(command)) {
 				tmpStore.put(command, responseData);

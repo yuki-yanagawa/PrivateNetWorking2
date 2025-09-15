@@ -41,6 +41,10 @@ public class CommandOperator {
 			return new DisconnectCommand(instance.getCommandPrivateNetHelper());
 		case REQUEST_FILE:
 			return new RequestFileCommand(instance.getCommandPrivateNetHelper());
+		case REQUEST_CALL:
+			return new RequestCallCommand(instance.getCommandPrivateNetHelper());
+		case REQUEST_CALL_ACK:
+			return new RequestCallAckCommand(instance.getCommandPrivateNetHelper());
 		default:
 			return new NoneCommand();
 		}

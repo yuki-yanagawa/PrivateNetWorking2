@@ -9,23 +9,31 @@ public class RequestHeader {
 	private METHOD method;
 	private String requestPath;
 	private String protocol;
+	private Map<String, String> queryMap;
 	private Map<String, String> requestMap;
 	
-	private RequestHeader(METHOD method, String requestPath, String protocol, Map<String, String> requestMap) {
+	private RequestHeader(METHOD method, String requestPath, String protocol, Map<String, String> requestMap, Map<String, String> queryMap) {
 		this.method = method;
 		this.requestPath = requestPath;
 		this.protocol = protocol;
 		this.requestMap = requestMap;
+		this.queryMap = queryMap;
 	}
 
 	static RequestHeader createRequestHeader(String[] textBases) {
 		String head = textBases[0];
 		String[] heads = head.split("\\s+");
+		Map<String, String> queryMap = new HashMap<>();
 		METHOD method = searchMethod(heads[0].trim());
 		if(method == null) {
 			return null;
 		}
 		String requestData = heads[1].trim();
+		if(requestData.contains("?")) {
+			String[] tmp = requestData.split("\\?");
+			setQueryMap(queryMap, tmp[1]);
+			requestData = tmp[0];
+		}
 		String protocol = heads[2].trim();
 
 		Map<String, String> map = new HashMap<>();
@@ -36,7 +44,13 @@ public class RequestHeader {
 			String[] keyVals = textBases[i].split(RequestDataDefnition.HTTP_REQUEST_HEAD_KEYVAL_SEPARATOR);
 			map.put(keyVals[0].trim().toUpperCase(), keyVals[1].trim());
 		}
-		return new RequestHeader(method, requestData, protocol, map);
+		return new RequestHeader(method, requestData, protocol, map, queryMap);
+	}
+
+	private static void setQueryMap(Map<String, String> queryMap, String queryLine) {
+		for(String q : queryLine.split("&")) {
+			queryMap.put(q.split("=")[0].trim(), q.split("=")[1].trim());
+		}
 	}
 
 	private static METHOD searchMethod(String method) {

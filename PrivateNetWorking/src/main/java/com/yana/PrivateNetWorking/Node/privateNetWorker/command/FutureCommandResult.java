@@ -4,9 +4,17 @@ public class FutureCommandResult<T> {
 	private static final long WAIT_LIMIT_TIME_MSEC = 3000;
 	private T result;
 	private long startTime;
+	private long timeWaitMsec;
 	public FutureCommandResult() {
-		startTime = System.currentTimeMillis();
+		this.startTime = System.currentTimeMillis();
+		this.timeWaitMsec = -1;
 	}
+
+	public FutureCommandResult(long timeWaitMsec) {
+		this.startTime = System.currentTimeMillis();
+		this.timeWaitMsec = timeWaitMsec;
+	}
+
 	public void setResult(T result) {
 		synchronized(this) {
 			this.result = result;
@@ -31,8 +39,12 @@ public class FutureCommandResult<T> {
 		}
 	}
 
+	private long getLimitTime() {
+		return this.timeWaitMsec == -1 ? WAIT_LIMIT_TIME_MSEC : this.timeWaitMsec; 
+	}
+
 	private boolean limitTimeOver() {
-		if(System.currentTimeMillis() - startTime > WAIT_LIMIT_TIME_MSEC) {
+		if(System.currentTimeMillis() - startTime > getLimitTime()) {
 			return true;
 		}
 		return false;

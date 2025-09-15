@@ -59,4 +59,8 @@ class CommandPrivateNetHelper {
 			LoggerUtil.warn(e);
 		}
 	}
+
+	PrivateNetSocket getPrivateNetSocket() {
+		return this.privateNetSocket;
+	}
 }

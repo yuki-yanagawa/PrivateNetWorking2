@@ -18,6 +18,9 @@ $(function() {
     $('#GetFile').off("click").on('click', function() {
         getFile();
     });
+    $('#Call').off("click").on('click', function() {
+        openCallWindow('request');
+    });
 });
 
 function getFileList() {
@@ -106,7 +109,7 @@ function join() {
 
 function registerObservation() {
     var obj = {
-        target : 'UPDATE_MEMBER, REQUEST_FILE_ACK, '
+        target : 'UPDATE_MEMBER, REQUEST_FILE_ACK, REQUEST_CALL,'
     };
     $.ajax({
         type: "POST",
@@ -131,12 +134,19 @@ function connectWebSocket() {
         registerObservation();
     };
     websocket.onmessage = function(event) {
+        console.log("WebSocket message received: " + event.data);
         var data = event.data.split("\r\n");
         if(data[0] ===  'UPDATE_MEMBER') {
             createMembershipList(data[1]);
         }
         if(data[0] === 'REQUEST_FILE_ACK') {
             alert("File transfer completed.");
+        }
+         if(data[0] === 'REQUEST_CALL') {
+            //alert("Call request received.");
+            localStorage.setItem("requestUser", data[1].split("CALLREQUEST_NAME=")[1].trim());
+            localStorage.setItem("requestUserAddr", data[2].split("CALLREQUEST_ADDR=")[1].trim());
+            openCallWindow('receive');
         }
     };
     websocket.onclose = function(event) {
@@ -190,4 +200,26 @@ function createFileList(files) {
             console.log("Selected file: " + this.innerHTML);
         });
     }
+}
+
+
+function openCallWindow(mode) {
+    if ($("#selectedUser").val().trim() === "") {
+        alert("Please select a user.");
+        return;
+    }
+    localStorage.setItem("serverUrl", url);
+    localStorage.setItem("selectedUser", $("#selectedUser").val().trim());
+    localStorage.setItem("myname", $("#name").val().trim());
+    var callFuncURL = url + "callWindow?mode=" + mode;
+    console.log("Call Function URL: " + callFuncURL);
+    window.open(callFuncURL,"sub window","width=800,height=600");
+}
+
+function openCallWindowTest(mode) {
+    localStorage.setItem("serverUrl", url);
+    localStorage.setItem("selectedUser", $("#selectedUser").val().trim());
+    localStorage.setItem("myname", $("#name").val().trim());
+    var callFuncURL = url + "callWindow?mode=" + mode;
+    window.open(callFuncURL);
 }
